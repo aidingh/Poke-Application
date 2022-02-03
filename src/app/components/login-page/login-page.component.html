@@ -1,0 +1,20 @@
+
+<header class="header">
+  <div class="row">
+    <div class=card>
+      <h1>{{title}}</h1>
+      <div class = "cardItemColumn">
+
+      <form class="form-control" (ngSubmit)= "tester()">
+        <label>Enter a trainer name</label>
+        <input type ="text" id = "login-form" name = "username" [(ngModel)] = "username" placeholder ="Ash Ketchum" />
+        <button id="btn-login" type="form-control"  class="btn">Login!</button>
+      </form>
+
+
+      </div>
+
+
+    </div>
+  </div>
+</header>
