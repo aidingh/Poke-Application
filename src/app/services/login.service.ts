@@ -19,13 +19,14 @@ export class LoginService{
 
   }
 
-  public query(username:string): Observable<Login[]> {
+  //---gets user from API
+  public query(username:string): Observable<Login[]> {  
     console.log("Above")
     console.log(this.http.get<Login[]>(`${this.apiURL}/trainers?username=${username}`));
     return this.http.get<Login[]>(`${this.apiURL}/trainers?username=${username}`)
 
   }
-
+  //--explain
   public queryRequestUser(username:string): void{
     this.http.get<Login[]>(`${this.apiURL}/trainers?username=${username}`).subscribe({
       next: data => {
@@ -38,14 +39,14 @@ export class LoginService{
       }
   })
   }
-
+  //---save user to API
   public setUserToApi(username:string): void {
     const headers = { 'X-API-Key': this.apiKEY, 'Content-Type': 'application/json' };
     const body = { username: username, pokemon: []};
 
     this.http.post<Login[]>(`${this.apiURL}/trainers?username=${username}`, body, { headers }).subscribe({
         next: data => {
-          this.user = data;
+          this.user = data; //What is happening here
         },
         error: error => {
           this.error = error.message;
