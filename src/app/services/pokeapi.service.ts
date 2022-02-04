@@ -11,14 +11,12 @@ export interface Pokemon {
   url: string
 }
 
-
 interface PokeAPIResponse {
   count: number,
   next: string,
   previous: string,
   results: Array<Pokemon>
 }
-
 
 @Injectable({providedIn: 'root'})
 export class PokeAPIService {
@@ -38,7 +36,7 @@ export class PokeAPIService {
     return this.pokemons
   }
 
-  private getListOfPokemonUrls(): Observable<Array<Pokemon>> {
+  public getListOfPokemonUrls(): Observable<Array<Pokemon>> {
     return this.http.get<any>(POKEAPI_URL)
       .pipe(
         map((response: PokeAPIResponse) =>

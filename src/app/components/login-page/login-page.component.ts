@@ -12,9 +12,6 @@ import { PokeAPIService, Pokemon } from 'src/app/services/pokeapi.service';
 })
 export class LoginPageComponent implements OnInit {
 
-  apiURL = "https://noroff-trivia-api.herokuapp.com";
-  apiKEY = "1b23229d-18ca-48ec-bdeb-9c7445384f23";
-
   title: string = "Pokemon Trainer";
   username: string = "";
 
@@ -22,53 +19,69 @@ export class LoginPageComponent implements OnInit {
   @Output() onUserLogin: EventEmitter<Login> = new EventEmitter()
 
   public users: Login[] | undefined;
-  public pokemons: Pokemon[] | undefined;
+  //public pokemonss: Pokemon[] | undefined;
+  public pokemons: Array<Pokemon> = []
 
 
-  constructor(private readonly loginService: LoginService, private readonly pokemonService:PokeAPIService,private router: Router) { }
+  constructor(private loginService: LoginService, private pokemonService: PokeAPIService, private router: Router) { }
 
-  ngOnInit(): void{
+  ngOnInit(): void {
 
-   this.loginService.query("ash").subscribe((res: Login[]) => {
-    this.users = res
-    this.username = this.users[0].username
-    console.log(this.users[0].username)
+    this.pokemonService.getListOfPokemonUrls().subscribe(
+      (results: Array<Pokemon>) => {
+        for (let p of results) {
+          this.pokemons.push(p)
+        }
 
-    localStorage.setItem('user', JSON.stringify(this.users));
-
-    if(localStorage.getItem('pokemons') == null){
-      localStorage.setItem('pokemons', JSON.stringify(this.pokemonService.get_pokemons()));
-    }
-    else{
-      console.log("Pokemons are already set in local storage")
-    }
-  })
+        if (sessionStorage.getItem('pokemons') == null) {
+          sessionStorage.setItem('pokemons', JSON.stringify(this.pokemons));
+        }
+        else {
+          console.log("Pokemons are already set in local storage")
+        }
+      }
+    )
   }
 
-  onLogin(): void{
-
-  }
-
-  get user(): Login[]{
+  get user(): Login[] {
     return this.loginService.getUser()
   }
 
-  getUser(): Login[]{
+  getUser(): Login[] {
     return this.loginService.getUser();
   }
 
-  tester(){
-    console.log("binding works")
-    //this.loginService.queryRequestUser(this.username);
-    this.loginService.queryRequestUser("ash");
-    let object = this.getUser();
-    console.log("a" + object);
+  onNavigate() {
+    this.loginService.queryUser(this.username).subscribe((res: Login[]) => {
+      if (res.length == 0) {
+        this.loginService.setUserToApi(this.username).subscribe((res: Login[]) => {
+          this.users = res
+          this.username = this.users[0].username
+          localStorage.setItem("current-user", this.users[0].username)
+          console.log("----User set to API-----")
+          return
+        })
+      }
+      else {
+        this.users = res
+        this.username = this.users[0].username
+        localStorage.setItem("current-user", this.users[0].username)
+        console.log("----User query found -----")
+        return
+      }
+    })
+
     this.router.navigateByUrl('/trainer');
   }
 
-  onSubmit(){
-    console.log(this.username)
-    //this.setUserToApi()
+  onSubmit() {
+    if (this.username == "") {
+      alert("Please enter a trainer name to continue...")
+      return
+    }
+    else {
+      this.onNavigate();
+    }
   }
 
 }
