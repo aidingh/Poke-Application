@@ -2,7 +2,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { LoginService } from 'src/app/services/login.service';
 import { Router } from '@angular/router';
 import { Login } from 'src/app/models/login.model';
-import { PokeAPIService } from 'src/app/services/pokeapi.service';
+import { PokeAPIService, Pokemon } from 'src/app/services/pokeapi.service';
 
 
 @Component({
@@ -21,15 +21,36 @@ export class LoginPageComponent implements OnInit {
   @Input() login: Login | undefined;
   @Output() onUserLogin: EventEmitter<Login> = new EventEmitter()
 
+  public users: Login[] | undefined;
+  public pokemons: Pokemon[] | undefined;
+
+
   constructor(private readonly loginService: LoginService, private readonly pokemonService:PokeAPIService,private router: Router) { }
 
-   ngOnInit(): void{
-    this.loginService.queryRequestUser("ash")
+  ngOnInit(): void{
 
-    this.pokemonService.get_pokemons()
+   this.loginService.query("ash").subscribe((res: Login[]) => {
+    this.users = res
+    this.username = this.users[0].username
+    console.log(this.users[0].username)
 
-    //let any = this.loginService.query("ash");
-    //console.log(any)
+    if(localStorage.getItem('pokemons') == null){
+      localStorage.setItem('pokemons', JSON.stringify(this.pokemonService.get_pokemons()));
+    }
+    else{
+      console.log("Pokemons are already set in local storage")
+    }
+
+    localStorage.setItem('user', JSON.stringify(this.users));
+
+  })
+
+  console.log(JSON.stringify(this.loginService.query("ash")))
+
+   this.pokemons = this.pokemonService.get_pokemons()
+   console.log("below")
+
+   console.log(this.pokemons)
 
     let object = this.getUser();
     console.log(object);

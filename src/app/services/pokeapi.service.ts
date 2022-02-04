@@ -20,9 +20,6 @@ interface PokeAPIResponse {
 }
 
 
-/**
- * PokéAPI service.
- */
 @Injectable({providedIn: 'root'})
 export class PokeAPIService {
   private pokemons: Array<Pokemon> = []

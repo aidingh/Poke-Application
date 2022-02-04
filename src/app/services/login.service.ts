@@ -14,17 +14,18 @@ export class LoginService{
   private error: string = "";
   apiURL = "https://noroff-trivia-api.herokuapp.com";
   apiKEY = "1b23229d-18ca-48ec-bdeb-9c7445384f23";
-
+  private userArr: Array<Login> = []
   constructor(private readonly http: HttpClient){
 
   }
 
-  public query(username:string): void{
+  public query(username:string): Observable<Login[]> {
     //return this.http.get(`${this.apiURL}/trainers?username=${username}`);
-    console.log(this.http.get<any>(`${this.apiURL}/trainers?username=${username}`))
-    let data =  this.http.get<any>(`${this.apiURL}/trainers?username=${username}`)
-    this.testUser = data
+    //console.log(this.http.get<any>(`${this.apiURL}/trainers?username=${username}`))
+    return this.http.get<Login[]>(`${this.apiURL}/trainers?username=${username}`)
+
   }
+
 
 
   public queryRequestUser(username:string): void{
