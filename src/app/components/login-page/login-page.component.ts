@@ -34,26 +34,15 @@ export class LoginPageComponent implements OnInit {
     this.username = this.users[0].username
     console.log(this.users[0].username)
 
+    localStorage.setItem('user', JSON.stringify(this.users));
+
     if(localStorage.getItem('pokemons') == null){
       localStorage.setItem('pokemons', JSON.stringify(this.pokemonService.get_pokemons()));
     }
     else{
       console.log("Pokemons are already set in local storage")
     }
-
-    localStorage.setItem('user', JSON.stringify(this.users));
-
   })
-
-  console.log(JSON.stringify(this.loginService.query("ash")))
-
-   this.pokemons = this.pokemonService.get_pokemons()
-   console.log("below")
-
-   console.log(this.pokemons)
-
-    let object = this.getUser();
-    console.log(object);
   }
 
   onLogin(): void{
@@ -79,39 +68,7 @@ export class LoginPageComponent implements OnInit {
 
   onSubmit(){
     console.log(this.username)
-    this.setUserToApi()
+    //this.setUserToApi()
   }
-
-  async setUserToApi(){
-    console.log("nothing to se here")
-
-      let userResponse = fetch(`${this.apiURL}/trainers?username=${this.username}`);
-      if ((await userResponse).ok) {
-        let data = await (await userResponse).json();
-
-        if (data.length == 0) {
-          let response = fetch(`${this.apiURL}/trainers`, {
-            method: "POST",
-            headers: { "X-API-Key": this.apiKEY, "Content-Type": "application/json" },
-            body: JSON.stringify({
-              username: this.username,
-              pokemon: [],
-            }),
-          });
-          let newResponse = await (await response).json();
-          console.log("a" + newResponse)
-          return newResponse
-        }
-        else{
-          let newData = { username: data[0].username, translations: data[0].translations, id: data[0].id }
-          console.log("b" + newData)
-          return newData
-        }
-      }
-      else{
-        console.log("something went wrong")
-      }
-  }
-
 
 }

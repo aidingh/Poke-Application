@@ -10,30 +10,25 @@ providedIn: 'root'
 export class LoginService{
   private user: Login[] = [];
   public testUser = {}
-  private isLoggedIn: boolean = false;
+
   private error: string = "";
   apiURL = "https://noroff-trivia-api.herokuapp.com";
   apiKEY = "1b23229d-18ca-48ec-bdeb-9c7445384f23";
-  private userArr: Array<Login> = []
+
   constructor(private readonly http: HttpClient){
 
   }
 
   public query(username:string): Observable<Login[]> {
-    //return this.http.get(`${this.apiURL}/trainers?username=${username}`);
-    //console.log(this.http.get<any>(`${this.apiURL}/trainers?username=${username}`))
+    console.log("Above")
+    console.log(this.http.get<Login[]>(`${this.apiURL}/trainers?username=${username}`));
     return this.http.get<Login[]>(`${this.apiURL}/trainers?username=${username}`)
 
   }
 
-
-
   public queryRequestUser(username:string): void{
     this.http.get<Login[]>(`${this.apiURL}/trainers?username=${username}`).subscribe({
       next: data => {
-        if(data.length == 0){
-          console.log("work magic here")
-        }
         console.log(data);
         this.user = data
       },
@@ -54,7 +49,7 @@ export class LoginService{
         },
         error: error => {
           this.error = error.message;
-            console.error('There was an error!', error);
+          console.error('There was an error!', error);
         }
     })
   }
