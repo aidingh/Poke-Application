@@ -18,8 +18,8 @@ export class LoginPageComponent implements OnInit {
   title: string = "Pokemon Trainer";
   username: string = "";
 
-  @Input() login: Login | undefined;
-  @Output() onUserLogin: EventEmitter<Login> = new EventEmitter()
+  @Input() login: Login | undefined;      //What is happening here
+  @Output() onUserLogin: EventEmitter<Login> = new EventEmitter() //And here
 
   public users: Login[] | undefined;
   public pokemons: Pokemon[] | undefined;
@@ -28,14 +28,17 @@ export class LoginPageComponent implements OnInit {
   constructor(private readonly loginService: LoginService, private readonly pokemonService:PokeAPIService,private router: Router) { }
 
   ngOnInit(): void{
-
-   this.loginService.query("ash").subscribe((res: Login[]) => {
+    
+  //---Getting the username
+    this.loginService.query("ash").subscribe((res: Login[]) => {   
     this.users = res
     this.username = this.users[0].username
     console.log(this.users[0].username)
 
-    localStorage.setItem('user', JSON.stringify(this.users));
+    //---saving username in local storage
+    localStorage.setItem('user', JSON.stringify(this.users)); 
 
+    //---if no pokemons in local storage get from service
     if(localStorage.getItem('pokemons') == null){
       localStorage.setItem('pokemons', JSON.stringify(this.pokemonService.get_pokemons()));
     }
@@ -48,7 +51,7 @@ export class LoginPageComponent implements OnInit {
   onLogin(): void{
 
   }
-
+  //-- getters for user
   get user(): Login[]{
     return this.loginService.getUser()
   }

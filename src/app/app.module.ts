@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { TrainerPageComponent } from './components/trainer-page/trainer-page.component';
+import { CataloguePageComponent } from './components/catalogue-page/catalogue-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginPageComponent,
-    TrainerPageComponent
+    TrainerPageComponent,
+    CataloguePageComponent
   ],
   imports: [
     HttpClientModule,
