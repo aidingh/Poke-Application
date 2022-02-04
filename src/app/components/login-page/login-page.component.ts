@@ -15,17 +15,19 @@ export class LoginPageComponent implements OnInit {
   title: string = "Pokemon Trainer";
   username: string = "";
 
-  @Input() login: Login | undefined;
-  @Output() onUserLogin: EventEmitter<Login> = new EventEmitter()
+  @Input() login: Login | undefined;      //What is happening here
+  @Output() onUserLogin: EventEmitter<Login> = new EventEmitter() //And here
 
   public users: Login[] | undefined;
   //public pokemonss: Pokemon[] | undefined;
   public pokemons: Array<Pokemon> = []
 
 
+
   constructor(private loginService: LoginService, private pokemonService: PokeAPIService, private router: Router) { }
 
   ngOnInit(): void {
+
 
     this.pokemonService.getListOfPokemonUrls().subscribe(
       (results: Array<Pokemon>) => {
@@ -43,7 +45,9 @@ export class LoginPageComponent implements OnInit {
     )
   }
 
-  get user(): Login[] {
+  //-- getters for user
+  get user(): Login[]{
+
     return this.loginService.getUser()
   }
 

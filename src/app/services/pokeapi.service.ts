@@ -22,6 +22,7 @@ interface PokeAPIResponse {
 export class PokeAPIService {
   private pokemons: Array<Pokemon> = []
 
+  //---get pokemons and push to array
   constructor(private http: HttpClient) {
     this.getListOfPokemonUrls().subscribe(
       (results: Array<Pokemon>) => {
@@ -31,12 +32,15 @@ export class PokeAPIService {
       }
     )
   }
-
+  //---get list of pokemons
   public get_pokemons(): Array<Pokemon> {
     return this.pokemons
   }
 
-  public getListOfPokemonUrls(): Observable<Array<Pokemon>> {
+
+  //---get list of pokemons URLS
+  private getListOfPokemonUrls(): Observable<Array<Pokemon>> {
+
     return this.http.get<any>(POKEAPI_URL)
       .pipe(
         map((response: PokeAPIResponse) =>
