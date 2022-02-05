@@ -1,2 +1,12 @@
 <p>catalogue-page works!</p>
 
+<img [src]="url" height="200px"> <br/>
+
+<select name="select" (change)="onChange()">   
+    <option *ngFor="let pokemon of pokemons; let i = index" >
+      {{pokemon.name}}
+    </option> 
+</select>   
+<input type="button" value="Choose" (click)="GetSelectedIndex()" />
+
+

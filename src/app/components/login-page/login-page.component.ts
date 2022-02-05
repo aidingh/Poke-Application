@@ -28,13 +28,15 @@ export class LoginPageComponent implements OnInit {
 
   ngOnInit(): void {
 
+    sessionStorage.clear()
 
     this.pokemonService.getListOfPokemonUrls().subscribe(
       (results: Array<Pokemon>) => {
         for (let p of results) {
           this.pokemons.push(p)
         }
-
+        console.log("from login page pokemons")
+        console.log(this.pokemons)
         if (sessionStorage.getItem('pokemons') == null) {
           sessionStorage.setItem('pokemons', JSON.stringify(this.pokemons));
         }
