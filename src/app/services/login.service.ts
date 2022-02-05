@@ -32,6 +32,7 @@ export class LoginService{
     return data
   }
 
+
   public isLoggedIn(){
       return this.isLoggedIn;
   }

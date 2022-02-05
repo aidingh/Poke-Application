@@ -4,6 +4,7 @@ import * as $ from 'jquery'
 
 import { PokeAPIService, Pokemon } from 'src/app/services/pokeapi.service';
 import { LoginService } from 'src/app/services/login.service';  
+import { CatalogueService } from 'src/app/services/catalogue.service';
 import { __values } from 'tslib';
 
 
@@ -25,6 +26,7 @@ export class CataloguePageComponent implements OnInit {
 
   constructor(private readonly loginService:LoginService, 
               private readonly pokemonService:PokeAPIService,
+              private readonly catalogueService:CatalogueService,
               private router: Router) {
 
                 
@@ -71,7 +73,11 @@ onChange() {
   this.url=this.Avatars[i];
   console.log(this.url)
 }
-GetSelectedIndex() {
+onChooseButton() {
+  const user: string|null|any = localStorage.getItem("current-user")
+  let i = $("select[name='select'] option:selected").index();
+  this.catalogueService.getPokeList("ash",this.pokemons[i].name)
+  this.catalogueService.updatePokeList("ash")
   
 }
 }//npm i --save-dev @types/jquery
