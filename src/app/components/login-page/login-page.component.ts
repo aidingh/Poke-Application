@@ -16,20 +16,25 @@ export class LoginPageComponent implements OnInit {
   username: string = "";
   logo: string = '../assets/images/left-poke-ball.png'
 
-  @Input() login: Login | undefined;
-  @Output() onUserLogin: EventEmitter<Login> = new EventEmitter()
+  @Input() login: Login | undefined;      //What is happening here
+  @Output() onUserLogin: EventEmitter<Login> = new EventEmitter() //And here
 
   public users: Login[] | undefined;
   public pokemons: Array<Pokemon> = []
 
+
   constructor(private loginService: LoginService, private pokemonService: PokeAPIService, private router: Router) { }
 
   ngOnInit(): void {
+
+    sessionStorage.clear()
+
     this.pokemonService.getListOfPokemonUrls().subscribe(
       (results: Array<Pokemon>) => {
         for (let p of results) {
           this.pokemons.push(p)
         }
+
         if (sessionStorage.getItem('pokemons') == null) {
           sessionStorage.setItem('pokemons', JSON.stringify(this.pokemons));
         }
@@ -40,7 +45,9 @@ export class LoginPageComponent implements OnInit {
     )
   }
 
-  get user(): Login[] {
+  //-- getters for user
+  get user(): Login[]{
+
     return this.loginService.getUser()
   }
 
