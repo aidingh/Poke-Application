@@ -7,7 +7,7 @@ const POKEAPI_URL = 'https://pokeapi.co/api/v2/pokemon?limit=1118'
 
 export interface Pokemon {
   name: string,
-  url: string
+  url: string,
 }
 
 interface PokeAPIResponse {
