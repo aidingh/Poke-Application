@@ -17,6 +17,7 @@ export class LoginService{
 
   apiURL = "https://noroff-trivia-api.herokuapp.com";
   apiKEY = "1b23229d-18ca-48ec-bdeb-9c7445384f23";
+  status: string | undefined;
 
   constructor(public readonly http: HttpClient){
   }
@@ -27,9 +28,16 @@ export class LoginService{
 
   public setUserToApi(username:string): Observable<Login[]> {
     const headers = { 'X-API-Key': this.apiKEY, 'Content-Type': 'application/json' };
-    const body = [{ username: username, pokemon: []}];
+    //const body =JSON.stringify( [{ username: username, pokemon: []}] );
+    const body =[{username: username, pokemon: []}];
     let data = this.http.post<Login[]>(`${this.apiURL}/trainers?username=${username}`, body, { headers })
     return data
+  }
+
+  public deleteSelectedUserPokemon(pokemon:string, username:string, id:string): void {
+    const headers = { 'X-API-Key': this.apiKEY, 'Content-Type': 'application/json' };
+    this.http.delete(`${this.apiURL}/trainers?username=${username}`, { headers })
+        .subscribe(() => this.status = 'Delete successful');
   }
 
   public isLoggedIn(){

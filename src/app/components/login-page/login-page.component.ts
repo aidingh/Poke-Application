@@ -14,25 +14,22 @@ export class LoginPageComponent implements OnInit {
 
   title: string = "Pokemon Trainer";
   username: string = "";
+  logo: string = '../assets/images/left-poke-ball.png'
 
   @Input() login: Login | undefined;
   @Output() onUserLogin: EventEmitter<Login> = new EventEmitter()
 
   public users: Login[] | undefined;
-  //public pokemonss: Pokemon[] | undefined;
   public pokemons: Array<Pokemon> = []
-
 
   constructor(private loginService: LoginService, private pokemonService: PokeAPIService, private router: Router) { }
 
   ngOnInit(): void {
-
     this.pokemonService.getListOfPokemonUrls().subscribe(
       (results: Array<Pokemon>) => {
         for (let p of results) {
           this.pokemons.push(p)
         }
-
         if (sessionStorage.getItem('pokemons') == null) {
           sessionStorage.setItem('pokemons', JSON.stringify(this.pokemons));
         }
@@ -57,7 +54,7 @@ export class LoginPageComponent implements OnInit {
         this.loginService.setUserToApi(this.username).subscribe((res: Login[]) => {
           this.users = res
           this.username = this.users[0].username
-          localStorage.setItem("current-user", this.users[0].username)
+          localStorage.setItem("current-user", JSON.stringify(this.users))
           console.log("----User set to API-----")
           return
         })
@@ -65,12 +62,11 @@ export class LoginPageComponent implements OnInit {
       else {
         this.users = res
         this.username = this.users[0].username
-        localStorage.setItem("current-user", this.users[0].username)
+        localStorage.setItem("current-user", JSON.stringify(this.users))
         console.log("----User query found -----")
         return
       }
     })
-
     this.router.navigateByUrl('/trainer');
   }
 
