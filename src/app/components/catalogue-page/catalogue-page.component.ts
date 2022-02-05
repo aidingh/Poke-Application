@@ -66,14 +66,12 @@ export class CataloguePageComponent implements OnInit {
       console.log("no pokemons")
     }
 }
-// onChange() {
-//   let i = $('#select option:selected').index();
-//   this.url=this.Avatars[i];
-//   console.log(this.url)
-// }
-GetSelectedIndex() {
+onChange() {
   let i = $("select[name='select'] option:selected").index();
   this.url=this.Avatars[i];
   console.log(this.url)
+}
+GetSelectedIndex() {
+  
 }
 }//npm i --save-dev @types/jquery
