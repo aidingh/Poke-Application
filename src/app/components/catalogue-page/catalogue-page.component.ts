@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import * as $ from 'jquery'
 
 import { PokeAPIService, Pokemon } from 'src/app/services/pokeapi.service';
-import { LoginService } from 'src/app/services/login.service';  
+import { LoginService } from 'src/app/services/login.service';
 import { CatalogueService } from 'src/app/services/catalogue.service';
 import { __values } from 'tslib';
 
@@ -24,13 +24,7 @@ export class CataloguePageComponent implements OnInit {
   Avatars: Array<ImageBitmap>|any|null|undefined|((error: any) => void) = []
   //private readonly pokemons$: BehaviorSubject<Pokemon[]> = new BehaviorSubject<Pokemon[]>();
 
-  constructor(private readonly loginService:LoginService, 
-              private readonly pokemonService:PokeAPIService,
-              private readonly catalogueService:CatalogueService,
-              private router: Router) {
-
-                
-               }
+  constructor(private readonly loginService:LoginService, private readonly pokemonService:PokeAPIService, private readonly catalogueService:CatalogueService, private router: Router) {}
 
 
   ngOnInit(): void {
@@ -48,13 +42,13 @@ export class CataloguePageComponent implements OnInit {
          let id2 = (id.url.toString().split('/',7))[6]
          //console.log((id.toString().split('/',7))[6])
          this.pokemonsID.push(id2)
-     
-      } 
+
+      }
 
       for(let id of this.pokemonsID){
         //console.log(id)
          this.Avatars.push(this.pokemonService.getAvatars(id))
-          
+
       }
       // for (let i=0;i<this.Avatars.length; i++){
       //   console.log(this.Avatars[i])
@@ -63,8 +57,8 @@ export class CataloguePageComponent implements OnInit {
       // for(let i =0; i<this.pokemons.length; i++){
       //   https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png
       // }
-      
-    }else{  
+
+    }else{
       console.log("no pokemons")
     }
 }
@@ -78,6 +72,6 @@ onChooseButton() {
   let i = $("select[name='select'] option:selected").index();
   this.catalogueService.getPokeList("ash",this.pokemons[i].name)
   this.catalogueService.updatePokeList("ash")
-  
+
 }
 }//npm i --save-dev @types/jquery
