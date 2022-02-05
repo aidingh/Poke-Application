@@ -15,6 +15,7 @@ export class LoginPageComponent implements OnInit {
   title: string = "Pokemon Trainer";
   username: string = "";
   logo: string = '../assets/images/left-poke-ball.png'
+  tryhard: string[] = [];
 
   @Input() login: Login | undefined;      //What is happening here
   @Output() onUserLogin: EventEmitter<Login> = new EventEmitter() //And here
@@ -46,7 +47,7 @@ export class LoginPageComponent implements OnInit {
   }
 
   //-- getters for user
-  get user(): Login[]{
+  get user(): Login[] {
 
     return this.loginService.getUser()
   }
@@ -59,9 +60,7 @@ export class LoginPageComponent implements OnInit {
     this.loginService.queryUser(this.username).subscribe((res: Login[]) => {
       if (res.length == 0) {
         this.loginService.setUserToApi(this.username).subscribe((res: Login[]) => {
-          this.users = res
-          this.username = this.users[0].username
-          localStorage.setItem("current-user", JSON.stringify(this.users))
+          localStorage.setItem("current-user", JSON.stringify([res]))
           console.log("----User set to API-----")
           return
         })

@@ -28,9 +28,8 @@ export class LoginService{
 
   public setUserToApi(username:string): Observable<Login[]> {
     const headers = { 'X-API-Key': this.apiKEY, 'Content-Type': 'application/json' };
-    //const body =JSON.stringify( [{ username: username, pokemon: []}] );
-    const body =[{username: username, pokemon: []}];
-    let data = this.http.post<Login[]>(`${this.apiURL}/trainers?username=${username}`, body, { headers })
+    const body = {username: username, pokemon: []};
+    let data = this.http.post<Login[]>(`${this.apiURL}/trainers?username=${username}`, JSON.stringify(body), {'headers':headers})
     return data
   }
 
