@@ -3,8 +3,7 @@ import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 
-const POKEAPI_URL = 'https://pokeapi.co/api/v2/pokemon/'
-
+const POKEAPI_URL = 'https://pokeapi.co/api/v2/pokemon?limit=1118'
 
 export interface Pokemon {
   name: string,
@@ -39,7 +38,7 @@ export class PokeAPIService {
 
 
   //---get list of pokemons URLS
-  private getListOfPokemonUrls(): Observable<Array<Pokemon>> {
+  public getListOfPokemonUrls(): Observable<Array<Pokemon>> {
 
     return this.http.get<any>(POKEAPI_URL)
       .pipe(
@@ -47,5 +46,10 @@ export class PokeAPIService {
         response.results
         )
       );
+  }
+  public getAvatars(index: string){
+    
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index}.png`
+    
   }
 }
