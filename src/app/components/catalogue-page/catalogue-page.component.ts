@@ -17,37 +17,39 @@ export class CataloguePageComponent implements OnInit {
 
   // @Input() Avatar?: Avatar;
   // @Output() complete: EventEmitter<number> = new EventEmitter();
+  title: string = "Catalogue";
+  username: string = "Set user here";
 
-  url=''
-  pokemons: Array<Pokemon>|null|string|undefined|string[]|any = [];
-  pokemonsID: Array<Pokemon>|null|string|undefined|string[]|any = [];
-  Avatars: Array<ImageBitmap>|any|null|undefined|((error: any) => void) = []
+  url = ''
+  pokemons: Array<Pokemon> | null | string | undefined | string[] | any = [];
+  pokemonsID: Array<Pokemon> | null | string | undefined | string[] | any = [];
+  Avatars: Array<ImageBitmap> | any | null | undefined | ((error: any) => void) = []
   //private readonly pokemons$: BehaviorSubject<Pokemon[]> = new BehaviorSubject<Pokemon[]>();
 
-  constructor(private readonly loginService:LoginService, private readonly pokemonService:PokeAPIService, private readonly catalogueService:CatalogueService, private router: Router) {}
+  constructor(private readonly loginService: LoginService, private readonly pokemonService: PokeAPIService, private readonly catalogueService: CatalogueService, private router: Router) { }
 
 
   ngOnInit(): void {
 
-    if (sessionStorage.getItem('pokemons')!= null){
-      const pokemons: {name: string, url: string}[]|string|null = sessionStorage.getItem('pokemons')
+    if (sessionStorage.getItem('pokemons') != null) {
+      const pokemons: { name: string, url: string }[] | string | null = sessionStorage.getItem('pokemons')
       this.pokemons = pokemons
       this.pokemons = JSON.parse(this.pokemons)
       //console.log("all pokemons from catalogue")
       //console.log(this.pokemons)
 
 
-      for(let id of this.pokemons){
+      for (let id of this.pokemons) {
         //console.log(id.url)
-         let id2 = (id.url.toString().split('/',7))[6]
-         //console.log((id.toString().split('/',7))[6])
-         this.pokemonsID.push(id2)
+        let id2 = (id.url.toString().split('/', 7))[6]
+        //console.log((id.toString().split('/',7))[6])
+        this.pokemonsID.push(id2)
 
       }
 
-      for(let id of this.pokemonsID){
+      for (let id of this.pokemonsID) {
         //console.log(id)
-         this.Avatars.push(this.pokemonService.getAvatars(id))
+        this.Avatars.push(this.pokemonService.getAvatars(id))
 
       }
       // for (let i=0;i<this.Avatars.length; i++){
@@ -58,20 +60,27 @@ export class CataloguePageComponent implements OnInit {
       //   https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png
       // }
 
-    }else{
+    } else {
       console.log("no pokemons")
     }
-}
-onChange() {
-  let i = $("select[name='select'] option:selected").index();
-  this.url=this.Avatars[i];
-  console.log(this.url)
-}
-onChooseButton() {
-  const user: string|null|any = localStorage.getItem("current-user")
-  let i = $("select[name='select'] option:selected").index();
-  this.catalogueService.getPokeList("ash",this.pokemons[i].name)
-  this.catalogueService.updatePokeList("ash")
+  }
+  //Must add more functionality here
+  onLogout(){
+    localStorage.clear()
+    sessionStorage.clear()
+    this.router.navigateByUrl('/login');
+  }
 
-}
+  onChange() {
+    let i = $("select[name='select'] option:selected").index();
+    this.url = this.Avatars[i];
+    console.log(this.url)
+  }
+  onChooseButton() {
+    const user: string | null | any = localStorage.getItem("current-user")
+    let i = $("select[name='select'] option:selected").index();
+    this.catalogueService.getPokeList("ash", this.pokemons[i].name)
+    this.catalogueService.updatePokeList("ash")
+
+  }
 }//npm i --save-dev @types/jquery
