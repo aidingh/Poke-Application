@@ -54,12 +54,12 @@ public getPokeList(username: string, pokemonAdd: string): void {
     .subscribe(
     (results: any )=> {
         console.log("from http request  ")
-        console.log(results)
-        console.log(results[0].pokemon)
+        //console.log(results)
+        //console.log(results[0].pokemon)
         for(let p of results[0].pokemon) {
             this.pokelist.push(p)
-            console.log(p)
-            console.log(this.pokelist)
+           // console.log(p)
+            //console.log(this.pokelist)
             if (this.pokelist.includes(pokemonAdd)){
                 console.log("you already have pokemon")
             }else{
