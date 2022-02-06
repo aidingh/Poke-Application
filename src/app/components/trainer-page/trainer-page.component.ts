@@ -17,71 +17,56 @@ export class TrainerPageComponent implements OnInit {
   user_pokemons: string[] = [];
   default_pokemons: string[] = [];
 
-  url=''
-  pokemons: Array<Pokemon>|null|string|undefined|string[]|any = [];
-  pokemonsID: Array<Pokemon>|null|string|undefined|string[]|any = [];
-  Avatars: Array<ImageBitmap>|any|null|undefined|((error: any) => void) = []
+  pokemons: Array<Pokemon> = [];
+  pokemonAvatarUrls: any[] = [];
+  pokeListToAPI: any[] = [];
+  selectedPokemonList: string[] = [];
+  Avatars: Array<ImageBitmap> = [];
 
-  constructor(private loginService:LoginService, private readonly pokemonService:PokeAPIService, private readonly catalogueService:CatalogueService, private router: Router) {}
+  constructor(private loginService: LoginService, private readonly pokemonService: PokeAPIService, private readonly catalogueService: CatalogueService, private router: Router) { }
 
-  //35
   ngOnInit(): void {
-    if(localStorage.getItem('current-user') != null){
-      let current_user = JSON.parse(localStorage.getItem('current-user') || '{}');
+
+    let current_user = JSON.parse(localStorage.getItem('current-user') || '{}');
+    if(current_user){
       this.username = current_user[0].username
       this.user_id = current_user[0].id
       this.user_pokemons = current_user[0].pokemon.toString().split(',')
-      //console.log(this.user_pokemons)
-      this.default_pokemons = JSON.parse(sessionStorage.getItem("pokemons") || '{}')
+      this.pokemons = JSON.parse(sessionStorage.getItem("pokemons") || '{}')
     }
-    
-    const pokemons = sessionStorage.getItem('pokemons')||'{}'
-    this.pokemons = JSON.parse(pokemons)
-    //console.log(this.pokemons[0].name)
 
-    // this.pokemonsID = JSON.parse(sessionStorage.getItem('pokemonsID') || '{}')
-    // console.log(this.pokemonsID)
-    // for(let i = 0; i<this.pokemonsID.length; i++){
-    //   console.log(this.pokemonsID[i]) 
-    // }
-    for(let id of this.pokemons){
-      //console.log(id.url)
-       let id2 = (id.url.toString().split('/',7))[6]
-       console.log((id.url.toString().split('/',7))[6])
-       this.pokemonsID.push(id2)
-    }
-      
-  
-
-    for(let name of this.user_pokemons){
-      for(let pokemon of this.pokemons){
-        let name2 = pokemon.name 
-        //console.log(name)
-        //console.log(name2)
-        if(name==name2){
-          let index = this.pokemons.indexOf(pokemon)
-          let id = this.pokemonsID[index] 
-          console.log(index)
-          console.log
-          this.Avatars.push(this.pokemonService.getAvatars(id))
-          }
-        }
-      }     
-      for (let i=0; i<this.Avatars.length; i++){
-        console.log(this.Avatars[i])
+    for (let i = 0; i < this.pokemons.length; i++) {
+      let index = this.pokemons.findIndex(x => x.name === this.user_pokemons[i])
+      if (index != -1) {
+        let temp_id = this.pokemons[index].url.toString().split('/', 7)[6]
+        let obj = { pokemon: this.pokemons[index].name, id: temp_id, img_url: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${temp_id}.png` }
+        this.pokemonAvatarUrls.push(obj)
       }
-     
-      
-      
-
-    }  
-  
-
-  onPokemonDelete(){
-    console.log("make maginc")
+    }
   }
 
-  onNavigate(){
+  updater(){
+    let current_user = JSON.parse(localStorage.getItem('current-user') || '{}');
+    if(current_user){
+      this.user_pokemons = current_user[0].pokemon.toString().split(',')
+      this.pokemons = JSON.parse(sessionStorage.getItem("pokemons") || '{}')
+    }
+  }
+
+  onChangeStatusCheckBox(selectedPokemon: string) {
+    console.log(selectedPokemon)
+    this.selectedPokemonList.push(selectedPokemon)
+  }
+
+  onPokemonDelete() {
+    for(let i = 0; i < this.selectedPokemonList.length; i++) {
+      this.pokemonAvatarUrls = this.pokemonAvatarUrls.filter(e => e.pokemon != this.selectedPokemonList[i]);
+    }
+    this.pokeListToAPI = this.pokemonAvatarUrls.map(x => x.pokemon);
+    this.loginService.deleteSelectedUserPokemon(this.pokeListToAPI, this.user_id);
+  }
+
+  onNavigate() {
     this.router.navigateByUrl('/catalogue');
   }
 

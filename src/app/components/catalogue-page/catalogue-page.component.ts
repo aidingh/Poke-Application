@@ -35,34 +35,18 @@ export class CataloguePageComponent implements OnInit {
       const pokemons: { name: string, url: string }[] | string | null = sessionStorage.getItem('pokemons')
       this.pokemons = pokemons
       this.pokemons = JSON.parse(this.pokemons)
-      //console.log("all pokemons from catalogue")
-      //console.log(this.pokemons)
-
 
       for (let id of this.pokemons) {
-        //console.log(id.url)
-
          let id2 = (id.url.toString().split('/',7))[6]
-         console.log((id.url.toString().split('/',7))[6])
          this.pokemonsID.push(id2)
 
       }
       sessionStorage.setItem("pokemonsID", this.pokemonsID)
 
-
       for(let id of this.pokemonsID){
-        console.log(id)
          this.Avatars.push(this.pokemonService.getAvatars(id))
-
-
       }
-      // for (let i=0;i<this.Avatars.length; i++){
-      //   console.log(this.Avatars[i])
-      // }
 
-      // for(let i =0; i<this.pokemons.length; i++){
-      //   https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png
-      // }
 
     } else {
       console.log("no pokemons")
@@ -78,7 +62,7 @@ export class CataloguePageComponent implements OnInit {
   onChange() {
     let i = $("select[name='select'] option:selected").index();
     this.url = this.Avatars[i];
-    console.log(this.url)
+    //console.log(this.url)
   }
   onChooseButton() {
     const user: string | null | any = localStorage.getItem("current-user")

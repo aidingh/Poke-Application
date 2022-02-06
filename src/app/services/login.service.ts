@@ -34,12 +34,24 @@ export class LoginService{
   }
 
 
-  public deleteSelectedUserPokemon(pokemon:string, username:string, id:string): void {
+  public deleteSelectedUserPokemon(pokemon:string[], id:string): void {
+    console.log("ok dude")
     const headers = { 'X-API-Key': this.apiKEY, 'Content-Type': 'application/json' };
-    this.http.delete(`${this.apiURL}/trainers?username=${username}`, { headers })
-        .subscribe(() => this.status = 'Delete successful');
-  }
+    const body = {pokemon: pokemon};
 
+    this.http.patch<Login[]>(`${this.apiURL}/trainers/${id}`, JSON.stringify(body), {'headers':headers}).subscribe({
+      next: data => {
+        sessionStorage.getItem("pokemons") || '{}'
+        let user = JSON.parse(localStorage.getItem('current-user' ) || '{}');
+        user = data
+        localStorage.setItem("current-user", JSON.stringify([user]));
+      },
+      error: error => {
+          this.error = error.message;
+          console.error('There was an error!', error);
+      }
+  })
+  }
 
   public isLoggedIn(){
       return this.isLoggedIn;
