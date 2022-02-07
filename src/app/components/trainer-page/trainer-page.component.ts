@@ -36,7 +36,7 @@ export class TrainerPageComponent implements OnInit {
     }
 
     for (let i = 0; i < this.pokemons.length; i++) {
-      let index = this.pokemons.findIndex(x => x.name === this.user_pokemons[i])
+      let index = this.pokemons.findIndex(e => e.name === this.user_pokemons[i])
       if (index != -1) {
         let temp_id = this.pokemons[index].url.toString().split('/', 7)[6]
         let obj = { pokemon: this.pokemons[index].name, id: temp_id, img_url: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${temp_id}.png` }
@@ -62,7 +62,7 @@ export class TrainerPageComponent implements OnInit {
     for(let i = 0; i < this.selectedPokemonList.length; i++) {
       this.pokemonAvatarUrls = this.pokemonAvatarUrls.filter(e => e.pokemon != this.selectedPokemonList[i]);
     }
-    this.pokeListToAPI = this.pokemonAvatarUrls.map(x => x.pokemon);
+    this.pokeListToAPI = this.pokemonAvatarUrls.map(e => e.pokemon);
     this.loginService.deleteSelectedUserPokemon(this.pokeListToAPI, this.user_id);
   }
 
