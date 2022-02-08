@@ -20,6 +20,15 @@ body {
   border-radius: 5px;
 }
 
+.div_top_hypers {
+  background-color:#eeeeee;
+  display:inline;
+}
+
+.ul_top_hypers li{
+  display: inline;
+}
+
 header {
   justify-content: space-between;
   align-items: center;
@@ -35,7 +44,7 @@ header {
 select {
   font-size: 14px;
   border: none;
-  width: 50%;
+  width: 30%;
   background: white;
 }
 
