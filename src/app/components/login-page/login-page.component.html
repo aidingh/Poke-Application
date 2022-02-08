@@ -1,16 +1,16 @@
-
+<!-- HTML-component for the login-page. Contains all the HTML-elements to create the page. -->
 <header class="header">
   <div class="row">
     <div class=card>
       <h1>{{title}}</h1>
       <h2>{{username}}</h2>
-      <div class = "cardItemColumn">
-      <form class="form-control" (ngSubmit)= "onSubmit()">
-        <label style="display:inline-block;"> Enter a trainer name</label>
-        <img src='../assets/images/left-poke-ball.png'/>
-        <input type ="text" id = "login-form" name = "username" [(ngModel)] = "username" placeholder ="Ash Ketchum" />
-        <button id="btn-login" type="form-control"  class="btn">Go!</button>
-      </form>
+      <div class="cardItemColumn">
+        <form class="form-control" (ngSubmit)="onSubmit()">
+          <label style="display:inline-block;"> Enter a trainer name</label>
+          <img src='../assets/images/left-poke-ball.png' />
+          <input type="text" id="login-form" name="username" [(ngModel)]="username" placeholder="Ash Ketchum" />
+          <button id="btn-login" type="form-control" class="btn">Go!</button>
+        </form>
       </div>
     </div>
   </div>

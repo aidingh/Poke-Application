@@ -1,25 +1,23 @@
+<!-- HTML-component for the catalogue-page. Contains all the HTML-elements to create the page. -->
 <header class="header">
   <div class="row">
     <div class=card>
-      <h1>{{title}}</h1>
-        <button id="btn-login" type="form-control" (click)="onLogout()" class="btn">Logout</button>
-      <h2>{{username}}</h2>
+      <button id="btn-nav" style="margin-left: 1500px;" type="form-control" (click)="onNavigate()"
+        class="btnChoose">Trainer Page</button>
+      <h1 style="margin-bottom: 20px;">{{title}}</h1>
+      <h2 style="display:inline-block; margin-bottom: 25px;">{{"Trainer "+ username}}</h2>
       <div>
-        <img [src]="url" height="300px"> <br/>
-        <select class = "options" name="select" (change)="onChange()">
-            <option *ngFor="let pokemon of pokemons; let i = index" >
-              {{pokemon.name}}
-            </option>
+        <img [src]="current_img" height="200px"> <br />
+        <select style="margin-bottom: 20px;" class="options" name="select" [(ngModel)]="selectedValue"
+          (change)="onChange()">
+          <option *ngFor="let pokemon of pokemons; let i = index">
+            {{pokemon.name}}
+          </option>
         </select>
       </div>
-      <button id="btn-choose"  (click)="onChooseButton()" class="btnChoose"> Collect pokemon!</button>
+      <button id="btn-choose" style="margin-bottom: 70px;" (click)="onChooseButton()" class="btnChoose"> Catch
+        pokemon!</button>
+      <img src={{logo}} />
     </div>
   </div>
 </header>
-
-
-
-
-
-
-

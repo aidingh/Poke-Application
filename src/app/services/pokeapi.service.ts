@@ -3,52 +3,57 @@ import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 
-const POKEAPI_URL = 'https://pokeapi.co/api/v2/pokemon?limit=1118'
+//Reference to the poke-API.
+const pokemonURL = 'https://pokeapi.co/api/v2/pokemon?limit=1118'
 
+//Interface model to capsulate the response in a model.
 export interface Pokemon {
   name: string,
   url: string,
 }
 
+//Interface model to capsulate the response in a model.
 interface PokeAPIResponse {
   count: number,
   next: string,
   previous: string,
   results: Array<Pokemon>
 }
+@Injectable({ providedIn: 'root' })
 
-@Injectable({providedIn: 'root'})
+/**
+ * Class is used as a service to the page components. It makes pokemon data reachable in all components
+ */
 export class PokeAPIService {
+
+  //Private variable used in a global scope in this component.
   private pokemons: Array<Pokemon> = []
 
-  //---get pokemons and push to array
-  constructor(private http: HttpClient) {
-    this.getListOfPokemonUrls().subscribe(
-      (results: Array<Pokemon>) => {
-        for(let p of results) {
-          this.pokemons.push(p)
-        }
-      }
-    )
-  }
-  //---get list of pokemons
-  public get_pokemons(): Array<Pokemon> {
+  /**
+   * Constructor with dependency injected components.
+   * HttpClient is a dependency to make REST-requests.
+   * @return {void} returns void
+   */
+  constructor(private http: HttpClient) { }
+
+  /**
+   * Function will return pokemon data as a array of pokemons.
+   * @return {Array<Pokemon>} returns pokemon urls and names.
+   */
+  public getPokemons(): Array<Pokemon> {
     return this.pokemons
   }
 
-
-  //---get list of pokemons URLS
+  /**
+ * Function will make a request to get pokemon data from the poke-API.
+ * @return {Observable<Array<Pokemon>>} returns pokemon response from poke-API.
+ */
   public getListOfPokemonUrls(): Observable<Array<Pokemon>> {
-
-    return this.http.get<any>(POKEAPI_URL)
+    return this.http.get<any>(pokemonURL)
       .pipe(
         map((response: PokeAPIResponse) =>
-        response.results
+          response.results
         )
       );
-  }
-  public getAvatars(index: string){
-    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index}.png`
-
   }
 }
